@@ -32,7 +32,6 @@ export async function signup(req,res){
         // profilePicture: randomAvatar,
     })
   
-
     const token = jwt.sign({userId:newUser._id}, process.env.JWT_SECRET_KEY,{
         expiresIn: "7d"
     } )
