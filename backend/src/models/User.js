@@ -13,7 +13,6 @@ const userSchema = new mongoose.Schema({
     friends: [{type: mongoose.Schema.Types.ObjectId, ref: "User"}]
 }, {timestamps:true});
 
-const User = mongoose.model("User", userSchema);
 
 userSchema.pre("save", async function(next) {
     if(!this.isModified("password")) return next();
@@ -25,7 +24,10 @@ userSchema.pre("save", async function(next) {
     } catch (error) {
         next(error);
     }
-})
+});
+
+const User = mongoose.model("User", userSchema);
+
 
 
 export default User;

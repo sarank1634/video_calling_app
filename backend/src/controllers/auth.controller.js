@@ -25,12 +25,13 @@ export async function signup(req,res){
     const idx = Math.floor(Math.random() * 100) + 1;
     const randomAvatar = `https://avatar.iran.liara.run/public/${idx}.png`; 
 
-    const newUser =  new User.create ({
+    const newUser =  await User.create ({
         fullName,
         email,
         password,
-        profilePicture: randomAvatar,
+        // profilePicture: randomAvatar,
     })
+  
 
     const token = jwt.sign({userId:newUser._id}, process.env.JWT_SECRET_KEY,{
         expiresIn: "7d"
@@ -39,13 +40,14 @@ export async function signup(req,res){
     res.cookie("jwt", token,{
         maxAge: 7 * 24 * 60 * 60 * 1000,
         httpOnly: true,
-        sa,eSide: "strict",
+        sameSite: "strict",
         secure: process.env.NODE_ENV === "production"
     })
 
     res.status(201).json({success: true, user: newUser})
    } catch (error) {
-    
+    console.log("Error in the signup controller", error);
+    return res.status(500).json({success: false, message: "Error in the signup controller"})
    }
 }
 
