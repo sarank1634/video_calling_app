@@ -14,4 +14,7 @@ app.use("/api/auth", authRoutes)
 app.listen(PORT, () => {
     console.log(`server is running on port ${PORT}`);
     connectDB();
+    console.log("Stream client initialized");
+    console.log("API Key", process.env.STREAM_API_KEY);
+    console.log("API Secret", process.env.STREAM_API_SECRET);
 } )

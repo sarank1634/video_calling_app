@@ -33,12 +33,24 @@ export async function signup(req,res){
         password,
         // profilePicture: randomAvatar,
     })
-
-    await upsertStreamUser(UserData: any): Promise<any>
-  
+      
+    try{
+    const upserted = await upsertStreamUser ({
+        id: newUser._id.toString(),
+        name: newUser.fullName,
+        image: newUser.profilePicture || "",
+      })
+      if (upserted) {
+        console.log(`Stream user created for ${newUser.fullName}`)
+      }
+    } catch(error) {
+      console.log("Error creating stream user", error)
+    }
     const token = jwt.sign({userId:newUser._id}, process.env.JWT_SECRET_KEY,{
         expiresIn: "7d"
-    });
+    }); 
+
+    
 
     res.cookie("jwt", token,{
         maxAge: 7 * 24 * 60 * 60 * 1000,
