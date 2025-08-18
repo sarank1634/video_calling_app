@@ -100,8 +100,57 @@ try {
 }
 }
 
-
 export async function logout(req,res){
     res.clearCookie("jwt")
     res.status(200).json({success: true, message: "User logged out successfully"});
 } 
+
+export async function onboarding(req,res){
+    try {
+        const userId = req.user._id;
+
+        const {fullName,bio, nativeLanguage, learningLanguage, location} = req.body;
+
+        if(!fullName || !bio || !nativeLanguage || !learningLanguage || !location) {
+            return res.status(400).json({
+                message: "All fields are required",
+                missingFields: [
+                 !fullName && {message: "Full name is required"},
+                 !bio && {message: "Bio is required"},
+                 !nativeLanguage && {message: "Native language is required"},
+                 !learningLanguage && {message: "Learning language is required"},
+                 !location && {message: "Location is required"},
+            ].filter(Boolean),
+        })
+        }
+
+        const updatedUser = await User.findByIdAndUpdate(
+         userId,
+          {
+            ...req.body,
+            isOnboarding: true
+        },
+         {new: true}
+    );
+
+    if(!updatedUser) return res.status(404).json({message: "User not found"});
+
+     try{
+        await upsertStreamUser({
+        id: updatedUser._id.toString(),
+        name: updatedUser.fullName,
+        image: updatedUser.profilePicture || "",
+    })
+     console.log(`Stream user updated after onboarding for ${updatedUser.fullName}`);
+     } catch(streamError){
+         console.log("Error updating Stream user during onboarding", streamError.message);
+     }
+    
+    //upadate the user info in the stream
+     return res.status(200).json({ success: true, user: updatedUser });
+ 
+    } catch (error) {
+        console.log("Error in the onboarding controller", error);
+        return res.status(500).json({ success: false, message: "Error in the onboarding controller" })
+     }
+}
