@@ -28,13 +28,19 @@ export const upsertStreamUser = async (userData) =>{
     }
 }
 
-export const generateStreamToken  = (userId) => {
-    if (!streamClient) {
-        console.log("Stream client not initialized; cannot create token.");
+export const generateStreamToken = (userId) => {
+    try {
+        if (!streamClient) {
+            console.log("Stream client not initialized; cannot create token.");
+            return null;
+        }
+        if (!userId) {
+            throw new Error("userId is required to generate a Stream token");
+        }
+        const userIdStr = userId.toString();
+        return streamClient.createToken(userIdStr);
+    } catch (error) {
+        console.log("Error generating stream token", error);
         return null;
     }
-    if (!userId) {
-        throw new Error("userId is required to generate a Stream token");
-    }
-    return streamClient.createToken(userId);
-};
+}

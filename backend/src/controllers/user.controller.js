@@ -119,12 +119,12 @@ export async function acceptFriendRequest(req, res) {
 
 export async function getFriendRequests(req,res){
     try {
-        const incomingReq = await  FriendRequest.find({
-            recepient: req.user.id,
+        const incomingReq = await FriendRequest.find({
+            recipient: req.user._id,
             status: "pending",
-        }) .populate("sender", "fullName profilePicture nativeLanguage learnLanguage");
+        }).populate("sender", "fullName profilePicture nativeLanguage learningLanguage");
         
-        res.status(200).json({incomingReq, acceptFriendRequest});
+        res.status(200).json(incomingReq);
     } catch (error) {
         console.log("Error in the  getPendingFriendRequests controller", error.message);
         res.status(500).json({ message: "Internal server error" });
@@ -135,10 +135,10 @@ export async function getFriendRequests(req,res){
 export async function getOutgoingFriendRequests(req,res) {
     try {
         const outgoingReq = await FriendRequest.find({
-            sender: req.user.id,
+            sender: req.user._id,
             status: "pending",
-        }). populate("recipient", "fullName profilePicture nativeLanguage learnLanguage");
-        res.status(200).json(outgoingRequests);
+        }).populate("recipient", "fullName profilePicture nativeLanguage learningLanguage");
+        res.status(200).json(outgoingReq);
     } catch (error) {
         console.log("Error in the getOutgoingFriendRequests controller", error.message);
         res.status(500).json({ message: "Internal server error" });
@@ -153,7 +153,7 @@ export async function rejectFriendRequest(req,res){
         if (!friendRequest) {
             return res.status(404).json({ message: "Friend request not found" });
         }
-        if (friendRequest.recipient.toString() !== req.user.id.toString()) {
+        if (friendRequest.recipient.toString() !== req.user._id.toString()) {
             return res.status(403).json({ message: "You can only reject friend requests sent to you" });
         }
         friendRequest.status = "rejected";
