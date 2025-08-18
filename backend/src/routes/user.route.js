@@ -1,18 +1,22 @@
 import express from "express";
 import { protectedRoute } from "../middleware/auth.middleware.js";
-import { getRecommendedUsers, getMyFriends } from "../controllers/user.controller.js";
-import { sendFriendRequest } from "../controllers/friend.controller.js";
+import { getRecommendedUsers, sendFriendRequest, 
+         getMyFriends, acceptFriendRequest, getFriendRequests, 
+         getOutgoingFriendRequests, rejectFriendRequest } from "../controllers/user.controller.js";
 
 const router = express.Router();
 
-router.post("/", (req, res) => {
-    res.json({ message: "User created" });
-});
-
-router.use(protectedRoute)
+router.use(protectedRoute);
 
 router.get("/", getRecommendedUsers);
 router.get("/friends", getMyFriends);
 
-router.post("/friend-request/:id", sendFriendRequest)
+router.post("/friend-request/:id", sendFriendRequest);
+router.put("/friend-request/:id/accept", acceptFriendRequest);
+router.put("/friend-request/:id/reject", rejectFriendRequest);
+
+
+router.get("/friend-requests", getFriendRequests);
+router.get("/outgoing-friend-requests", getOutgoingFriendRequests);
+
 export default router;
