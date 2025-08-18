@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import bcrypt from "bcrypt"
 
 const userSchema = new mongoose.Schema({
+
     fullName: {type: String, required: true},
     email: {type: String, required: true, unique: true},
     password: {type: String, required: true, minlength: 6},
@@ -11,7 +12,8 @@ const userSchema = new mongoose.Schema({
     learningLanguage: {type: String},
     isOnboarding: { type: Boolean, default: false},
     friends: [{type: mongoose.Schema.Types.ObjectId, ref: "User"}]
-}, {timestamps:true});
+} , {timestamps:true}
+);
 
 
 
