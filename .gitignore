@@ -29,3 +29,4 @@ package.json
 
 
 backend/.env
+frontend/.env

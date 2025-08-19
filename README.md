@@ -20,3 +20,6 @@ next step import and postcss and tailwindcss
 
  2.06.25sec daicy  i use version 4 . but i was use latest version 5 
  after add plugin in css
+
+ import inside tailwind config also add themes
+  app react-router
