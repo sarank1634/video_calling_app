@@ -22,4 +22,12 @@ next step import and postcss and tailwindcss
  after add plugin in css
 
  import inside tailwind config also add themes
-  app react-router
+  app react-router-dom
+   
+set routes after react hui toastify
+
+npm i react-hot-toast
+2.16.56 night theme not working
+
+
+axious react query tanstack
