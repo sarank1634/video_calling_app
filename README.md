@@ -33,3 +33,12 @@ npm i react-hot-toast
 axious react query tanstack 
 
 2.21.45 install tanstack query 
+set tenstack qurey after use fake api to fetch to test the  data
+2.25.55 after install github 
+
+   console.log({data});
+   console.log({isLoading})
+   console.log({error}) use to set state load after view see result and find error
+
+
+   2.26.59 setup axios lib   2.29.34 cors hasbeen setup in server.js

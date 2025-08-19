@@ -7,8 +7,19 @@ import OnboardingPage from './pages/OnboardingPage'
 import NotificationPage from './pages/NotificationPage'
 import CallPage from './pages/CallPage'
 import { Toaster } from 'react-hot-toast'
+import { useQuery } from '@tanstack/react-query'
+import { axiosInstaence } from './Lib/axios'
 
 const App = () => {
+
+  const {data, isLoading,error} = useQuery({ queryKey: ["todos"],
+
+     queryFn: async()=>  {
+         const res = await axiosInstaence.get('https://localhost:5001/auth/me');
+         return res.data;
+     },
+   });  
+    
 
    return (
    
