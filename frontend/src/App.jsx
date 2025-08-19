@@ -15,19 +15,21 @@ const App = () => {
   const {data, isLoading,error} = useQuery({ queryKey: ["todos"],
 
      queryFn: async()=>  {
-         const res = await axiosInstaence.get('https://localhost:5001/auth/me');
+         const res = await axiosInstaence.get('http://localhost:5001/api/auth/me');
          return res.data;
      },
+     retry : false,
    });  
-    
+  
+   console.log(data);
 
    return (
    
 
-      <div className="h-screen" data-theme= "night">
+      <div className="h-screen" data-theme="dark">
       
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/home" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/onboarding" element={<OnboardingPage />} />
