@@ -9,29 +9,9 @@ import CallPage from './pages/CallPage'
 import { Toaster } from 'react-hot-toast'
 
 const App = () => {
-     const [data, setData] = useState();
-     const [isLoading, setIsLoading] = useState(false);
-     const [ error, setError] = useState();
 
-      useEffect(() => {
-        const getData = async() => {
-          
-          try {
-            const data = await fetch("https://jsonplaceholder.typicode.com/todos")
-             const json = await data.json()
-             setData(json)
-          } catch (error) {
-            setError(error);
-          }finally {
-            setIsLoading(false);
-          }
-        }
-
-        getData();
-      }, [])
-       console.log(data);
    return (
-    
+   
 
       <div className="h-screen" data-theme= "night">
       

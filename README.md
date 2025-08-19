@@ -30,4 +30,6 @@ npm i react-hot-toast
 2.16.56 night theme not working
 
 
-axious react query tanstack
+axious react query tanstack 
+
+2.21.45 install tanstack query 
