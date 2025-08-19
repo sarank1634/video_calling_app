@@ -1,5 +1,5 @@
 import React, {  useEffect, useState } from 'react'
-import {Routes, Route} from 'react-router-dom'
+import {Routes, Route, Navigate} from 'react-router-dom'
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
 import SignUpPage from './pages/SignUp'
@@ -12,7 +12,7 @@ import { axiosInstaence } from './Lib/axios'
 
 const App = () => {
 
-  const {data, isLoading,error} = useQuery({ queryKey: ["todos"],
+  const {data:authData, isLoading,error} = useQuery({ queryKey: ["todos"],
 
      queryFn: async()=>  {
          const res = await axiosInstaence.get('http://localhost:5001/api/auth/me');
@@ -21,20 +21,21 @@ const App = () => {
      retry : false,
    });  
   
-   console.log(data);
-
+const authUser = authData?.user
    return (
    
 
       <div className="h-screen" data-theme="dark">
       
       <Routes>
-        <Route path="/home" element={<HomePage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<SignUpPage />} />
-        <Route path="/onboarding" element={<OnboardingPage />} />
-        <Route path="/notification" element={<NotificationPage />} />
-        <Route path="/call/:id" element={<CallPage />} />
+        <Route path="/home" element={authUser ?<HomePage /> : <Navigate to ="/login" />} />
+        <Route path="/signup" element={!authUser ? <SignUpPage />: <Navigate to="/" /> } />
+        <Route 
+            path="/login"
+             element={!authUser ?<LoginPage />: <Navigate to="/" />} />
+        <Route path="/onboarding" element={authUser ?<OnboardingPage /> : <Navigate to="/login" />} />
+        <Route path="/notification" element={authUser ?<NotificationPage />: <Navigate to="/login" />} />
+        <Route path="/call/:id" element={authUser ?<CallPage />: <Navigate to="/login" />} />
       </Routes>
       <Toaster />
       </div>
