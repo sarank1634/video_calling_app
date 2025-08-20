@@ -42,3 +42,7 @@ set tenstack qurey after use fake api to fetch to test the  data
 
 
    2.26.59 setup axios lib   2.29.34 cors hasbeen setup in server.js
+
+
+   3.00.04 has been onboarding page
+   

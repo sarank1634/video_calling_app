@@ -1,4 +1,3 @@
-import React, {  useEffect, useState } from 'react'
 import {Routes, Route, Navigate} from 'react-router-dom'
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
@@ -9,7 +8,7 @@ import CallPage from './pages/CallPage'
 import { Toaster } from 'react-hot-toast'
 import { useQuery } from '@tanstack/react-query'
 import axiosInstance from './Lib/axios'
-
+import PageLoader from './components/PageLoader'
 const App = () => {
 
   const {data:authData, isLoading,error} = useQuery({ queryKey: ["todos"],
@@ -21,9 +20,10 @@ const App = () => {
      retry : false,
    });  
   
-const authUser = authData?.user
+const authUser = authData?.user ; 
+  if(isLoading) return <PageLoader />
    return (
-    
+
       <div className="h-screen" data-theme="dark">
 
       <Routes>
