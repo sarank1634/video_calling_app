@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import LogPic from '../assets/i.png'
 import { useQueryClient, useMutation } from '@tanstack/react-query'
 import axiosInstance from '../Lib/axios'
+import { signup } from '../Lib/api'
 
 const SignUpPage = () => {
   const [signupData, setSignData] = useState({
@@ -13,23 +14,20 @@ const SignUpPage = () => {
   })
    const queryClient = useQueryClient();
 const Navigate = useNavigate();
-  const {mutate, isPending, error} = useMutation({
-    mutationFn: async (signupData) => {
-      const response = await axiosInstance.post('/auth/signup', signupData)
-      return response.data
-    },
+  const {mutate:signupMutation, isPending, error} = useMutation({
+    mutationFn:  signup,
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["authUser"] }),
     onSettled: () => {
       Navigate("/")
     },
     onError: (error) => {
-      console.log(error)
+          console.log(error)
     }
 
   })
   const handleSignup = (e) => {
-    e.preventDefault()
-    mutate(signupData)
+    e.preventDefault();
+    signupMutation(signupData);
   }
 
   return (
@@ -46,6 +44,13 @@ const Navigate = useNavigate();
                 Streamify
               </span>
             </div>
+
+              {/* ERROR MESSAGE ANY*/}
+              {error && (
+                <div className='alert error mb-4'>
+                  <span> {error.response.data.message} </span>
+                </div>
+              ) }
 
             {/* Title */}
             <div>
@@ -117,7 +122,14 @@ const Navigate = useNavigate();
 
             {/* Button */}
             <button className="btn btn-primary w-full" type="submit">
-              Create Account
+              {isPending ? (
+                <>
+                <span className="loading loading-spinner loading-xs"></span>
+                 Loading...
+                </>
+              ) : (
+                "Create Account"
+              )}
             </button>
 
             {/* Already have account */}

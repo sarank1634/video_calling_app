@@ -23,12 +23,11 @@ const App = () => {
   
 const authUser = authData?.user
    return (
-   
-
+    
       <div className="h-screen" data-theme="dark">
 
       <Routes>
-        <Route path="/" element={authUser ? <Navigate to="/home" /> : <Navigate to="/login" />} />
+        <Route path="/" element={authUser ? <Navigate to="/" /> : <Navigate to="/login" />} />
         <Route path="/home" element={authUser ?<HomePage /> : <Navigate to ="/login" />} />
         <Route path="/signup" element={!authUser ? <SignUpPage />: <Navigate to="/" /> } />
         <Route 
