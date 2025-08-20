@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { ShipWheelIcon } from "lucide-react"
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import LogPic from '../assets/i.png'
 import { useQueryClient, useMutation } from '@tanstack/react-query'
 import axiosInstance from '../Lib/axios'
@@ -12,13 +12,20 @@ const SignUpPage = () => {
     password: "",
   })
    const queryClient = useQueryClient();
-
+const Navigate = useNavigate();
   const {mutate, isPending, error} = useMutation({
     mutationFn: async (signupData) => {
       const response = await axiosInstance.post('/auth/signup', signupData)
       return response.data
     },
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["authUser"] }),
+    onSettled: () => {
+      Navigate("/")
+    },
+    onError: (error) => {
+      console.log(error)
+    }
+
   })
   const handleSignup = (e) => {
     e.preventDefault()
